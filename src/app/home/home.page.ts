@@ -1,4 +1,13 @@
 import { Component } from '@angular/core';
+import {
+  Auth,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  inMemoryPersistence,
+  UserCredential,
+} from '@angular/fire/auth';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +15,11 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  constructor(private readonly auth: Auth) {}
 
-  constructor() {}
-
+  login(email: string, password: string): Promise<UserCredential> {
+    return setPersistence(this.auth, browserLocalPersistence).then(() =>
+      signInWithEmailAndPassword(this.auth, email, password)
+    );
+  }
 }
